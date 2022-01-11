@@ -36,11 +36,12 @@ router.post("/register", async (req, res) => {
               } else {
                 console.log(result);
                 const token = generateAuthToken(result.insertId);
+                db.query("INSERT INTO profiles (userId, location, bio, profileImageUrl, backgroundImageUrl) VALUES (?,?,?,?,?)", [result.insertId, "Mon univers", "Ma bio !", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png", "https://images.pexels.com/photos/9347250/pexels-photo-9347250.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"]);
                 res.status(201).json({ message: 'Utilisateur créé !',
                 response: {
                   name: name,
                   email: email,
-                  _id: result.insertId,
+                  id: result.insertId,
                   token,
                 }
                })

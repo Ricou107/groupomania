@@ -79,10 +79,10 @@ export const authSlice = createSlice({
     },
     [registerUser.fulfilled]: (state, action) => {
       state.status = "success";
-      const { token, name, email, handle } = action.payload.response;
+      const { token, name, email, id, handle } = action.payload.response;
       localStorage.setItem(
         "login",
-        JSON.stringify({ token, name, email, handle, isLoggedIn: true })
+        JSON.stringify({ token, name, email, id, handle, isLoggedIn: true })
       );
       state.user.name = name;
       state.user.email = email;

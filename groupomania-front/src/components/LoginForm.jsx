@@ -15,8 +15,8 @@ export default function LoginForm() {
     dispatch(loginUser(loginData));
   };
   const loginAsGuest = () => {
-    setLoginData({ email: "tomato@mail.com", password: "tomato" });
-    dispatch(loginUser({ email: "tomato@mail.com", password: "tomato" }));
+    setLoginData({ email: "tomato2@test.com", password: "tomato" });
+    dispatch(loginUser({ email: "tomato2@test.com", password: "tomato" }));
   };
   useEffect(() => {
     if (isLoggedIn) {
