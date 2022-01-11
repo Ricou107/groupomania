@@ -34,27 +34,27 @@ export default function Post({ post, profile }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { _id } = JSON.parse(localStorage.getItem("login"));
+  const { id } = JSON.parse(localStorage.getItem("login"));
   const handleLike = async (e) => {
     e.preventDefault();
-    dispatch(updateLike({ id: post._id }));
-    const response = await likeOrDislikePost({ id: post._id });
+    dispatch(updateLike({ id: post.id }));
+    const response = await likeOrDislikePost({ id: post.id });
     if (response.message !== "Post updated successfully.") {
-      dispatch(updateLike({ id: post._id }));
+      dispatch(updateLike({ id: post.id }));
     }
   };
   const handleAddComment = async () => {
-    const response = await addComment({ id: post._id, text: commentText });
+    const response = await addComment({ id: post.id, text: commentText });
     if (response) {
       setCommentText("");
     }
   };
 
   const handleDeletePost = async () => {
-    const response = await deletePost({ id: post._id });
+    const response = await deletePost({ id: post.id });
     if (response) {
       if (profile) {
-        dispatch(getProfile(post.author._id));
+        dispatch(getProfile(post.author.id));
       } else {
         dispatch(getPosts());
       }
@@ -72,7 +72,7 @@ export default function Post({ post, profile }) {
   return (
     <>
       <Link
-        to={`/posts/${post._id}`}
+        to={`/posts/${post.id}`}
         style={{ textDecoration: "none", color: "inherit" }}
       >
         <Box
@@ -85,7 +85,7 @@ export default function Post({ post, profile }) {
         >
           <Grid container flexWrap="nowrap">
             <Grid item sx={{ paddingRight: "1rem" }}>
-              <Link to={`/profile/${post.author._id}`}>
+              <Link to={`/profile/${post.author.id}`}>
                 <img src="/logo.png" alt="lgoog" width="50px" />
               </Link>
             </Grid>
@@ -127,7 +127,7 @@ export default function Post({ post, profile }) {
                     </Box>
                   </Grid>
                   <Grid item>
-                    {post.author._id === _id && (
+                    {post.author.id === id && (
                       <IconButton
                         aria-expanded={open ? "true" : undefined}
                         onClick={(e) => {

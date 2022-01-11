@@ -57,14 +57,14 @@ export const authSlice = createSlice({
       state.status = "loading";
     },
     [loginUser.fulfilled]: (state, action) => {
-      const { token, name, email, _id } = action.payload.response;
+      const { token, name, email, id } = action.payload.response;
       localStorage.setItem(
         "login",
-        JSON.stringify({ token, email, _id, name, isLoggedIn: true })
+        JSON.stringify({ token, email, id, name, isLoggedIn: true })
       );
       state.user.name = name;
       state.user.email = email;
-      state.user._id = _id;
+      state.user.id = id;
       state.status = "success";
       state.isLoggedIn = true;
     },

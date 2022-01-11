@@ -5,8 +5,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import TagIcon from "@mui/icons-material/Tag";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import {
   Button,
   Grid,
@@ -17,9 +15,7 @@ import {
   MenuItem,
   useTheme,
 } from "@mui/material";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
-import ListAltIcon from "@mui/icons-material/ListAlt";
+
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -33,7 +29,7 @@ import { addPost } from "../api";
 export default function LeftSidebar() {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const { _id } = JSON.parse(localStorage.getItem("login"));
+  const { id } = JSON.parse(localStorage.getItem("login"));
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -105,109 +101,10 @@ export default function LeftSidebar() {
               </Hidden>
             </ListItem>
           </NavLink>
-
-          <ListItem
-            button
-            sx={{
-              borderRadius: "28px",
-              margin: ".5rem 0",
-            }}
-          >
-            <ListItemIcon>
-              <TagIcon fontSize="medium" color="action" />
-            </ListItemIcon>
-            <Hidden lgDown>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontSize: "18px",
-                  color: theme.palette.action.active,
-                }}
-                primary="Explore"
-              />
-            </Hidden>
-          </ListItem>
-          <ListItem
-            button
-            sx={{
-              borderRadius: "28px",
-              margin: ".5rem 0",
-            }}
-          >
-            <ListItemIcon>
-              <NotificationsNoneIcon fontSize="medium" color="action" />
-            </ListItemIcon>
-            <Hidden lgDown>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontSize: "18px",
-                  color: theme.palette.action.active,
-                }}
-                primary="Notifications"
-              />
-            </Hidden>
-          </ListItem>
-          <ListItem
-            button
-            sx={{
-              borderRadius: "28px",
-              margin: ".5rem 0",
-            }}
-          >
-            <ListItemIcon>
-              <MailOutlineIcon fontSize="medium" color="action" />
-            </ListItemIcon>
-            <Hidden lgDown>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontSize: "18px",
-                  color: theme.palette.action.active,
-                }}
-                primary="Messages"
-              />
-            </Hidden>
-          </ListItem>
-          <ListItem
-            button
-            sx={{
-              borderRadius: "28px",
-              margin: ".5rem 0",
-            }}
-          >
-            <ListItemIcon>
-              <BookmarkIcon fontSize="medium" color="action" />
-            </ListItemIcon>
-            <Hidden lgDown>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontSize: "18px",
-                  color: theme.palette.action.active,
-                }}
-                primary="Bookmarks"
-              />
-            </Hidden>
-          </ListItem>
-          <ListItem
-            button
-            sx={{
-              borderRadius: "28px",
-              margin: ".5rem 0",
-            }}
-          >
-            <ListItemIcon>
-              <ListAltIcon fontSize="medium" color="action" />
-            </ListItemIcon>
-            <Hidden lgDown>
-              <ListItemText
-                primaryTypographyProps={{
-                  fontSize: "18px",
-                  color: theme.palette.action.active,
-                }}
-                primary="Lists"
-              />
-            </Hidden>
-          </ListItem>
+          
+         
           <NavLink
-            to={`/profile/${_id}`}
+            to={`/profile/${id}`}
             style={{
               textDecoration: "none",
               color: "inherit",

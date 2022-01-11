@@ -1,33 +1,41 @@
 const express = require("express");
 const router = express.Router();
-const Profile = require("../models/profile.model");
-const Post = require("../models/post.model");
+//const Profile = require("../models/profile.model");
+//const Post = require("../models/post.model");
+const db = require('../config/db');
 
 router.get("/:userId", async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const profile = await Profile.findOne({ userId }).populate("userId").exec();
-    if (!profile) {
-      return res.status(404).json({
-        message: "Profile does not exist.",
-      });
+
+  const userId = req.params.userId;
+
+  db.query("SELECT * FROM profiles WHERE userId = ?", userId, (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ err });
+    } else {
+      if (result.length !== 1) {
+        return res.status(401).json({ message: "Utilisateur non trouve !" });;
+      } else {
+        const profile = result[0]
+        db.query("SELECT * FROM posts WHERE authorId = ?", userId, (err, result) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({ err });
+          } else {
+            profile.posts = result
+            res.status(200).json({
+              message: "Profile fetched successfully.",
+              profile,
+            });
+          }
+        })
+      }
     }
-    const posts = await Post.find({ author: userId }).populate("author").exec();
-    profile.posts = posts;
-    res.status(200).json({
-      message: "Profile fetched successfully.",
-      profile,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Something went wrong.",
-    });
-  }
+  });
 });
 
 router.put("/:profileId", async (req, res) => {
-  try {
+  /* try {
     const profileId = req.params.profileId;
     const updatedData = req.body;
     const profile = await Profile.findOneAndDelete(
@@ -45,7 +53,27 @@ router.put("/:profileId", async (req, res) => {
     res.status(500).json({
       message: "Something went wrong.",
     });
+  } */
+
+  const updatedData = req.body;
+  try {
+    db.query("UPDATE profiles SET location = ?, bio = ?, profileimageUrl = ?, backgroundImageUrl = ?", [updatedData.location, updatedData.bio, updatedData.profileImageUrl, updatedData.backgroundImageUrl], (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ err });
+      } else {
+        res.status(200).json({
+          message: "Profile updated successfully.",
+        });
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Something went wrong.",
+    });
   }
 });
+
 
 module.exports = router;

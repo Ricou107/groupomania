@@ -1,7 +1,6 @@
-import { CircularProgress, Grid, IconButton, Typography } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
-import AssistantIcon from "@mui/icons-material/Assistant";
 import Post from "../components/Post";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosts } from "../redux/postSlice";
@@ -21,11 +20,7 @@ export default function Home() {
           <Grid item>
             <Typography variant="h6">Home</Typography>
           </Grid>
-          <Grid item>
-            <IconButton>
-              <AssistantIcon />
-            </IconButton>
-          </Grid>
+  
         </Grid>
       </Box>
       <Box height="92vh" sx={{ overflowY: "scroll" }}>

@@ -11,3 +11,4 @@ module.exports = async function (url) {
     console.error("Something went wrong", error);
   }
 };
+
