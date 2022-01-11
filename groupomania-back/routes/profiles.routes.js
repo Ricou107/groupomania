@@ -30,12 +30,18 @@ router.get("/:userId", async (req, res) => {
                 profile.posts[i].author = {}
                 profile.posts[i].author.name = result[0].name;
                 profile.posts[i].author.handle = result[0].handle; 
-                profile.posts[i].author.createdAt = result[0].createdAt
+                profile.posts[i].author.createdAt = result[0].createdAt;
+                profile.email = result[0].email;
               }
+              db.query("SELECT * FROM profiles WHERE userId = ?", userId, (err, result) => {
+                for (let i = 0; i < profile.posts.length; i++) {
+                  profile.posts[i].author.profileImageUrl = result[0].profileImageUrl;
+                }
               res.status(200).json({
                 message: "Profile fetched successfully.",
                 profile,
               });
+            });
             });
           }
         })

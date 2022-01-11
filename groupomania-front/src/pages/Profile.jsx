@@ -96,7 +96,8 @@ export default function Profile() {
               <MoreHorizIcon />
             </IconButton>
             <IconButton>
-              <MailOutlineIcon />
+              <a href={"mailto:" + profile.email}><MailOutlineIcon /></a>
+              
             </IconButton>
           
           </Box>

@@ -84,7 +84,7 @@ export default function Post({ post, profile }) {
           <Grid container flexWrap="nowrap">
             <Grid item sx={{ paddingRight: "1rem" }}>
               <Link to={`/profile/${post.authorId}`}>
-                <img src="/logo.png" alt="lgoog" width="50px" />
+                <img src={post.author.profileImageUrl} alt="lgoog" width="50px" />
               </Link> 
             </Grid>
             <Grid item flexGrow="1">

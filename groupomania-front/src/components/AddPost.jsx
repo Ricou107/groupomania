@@ -31,7 +31,7 @@ export default function AddPost() {
               rows="2"
               disableUnderline
               type="text"
-              placeholder="What's happening?"
+              placeholder="Quoi de beau chez Groupomania ?"
               sx={{ width: "100%" }}
             />
           </Box>
