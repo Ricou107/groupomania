@@ -44,19 +44,27 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const userId = req.user._id;
-    const id = req.params.id;
-    const post = await Post.findOne({ _id: id }).populate("author").exec();
-    if (post.likes.includes(userId)) {
-      post.isLiked = true;
-    }
+    const userId = req.user.id;
+    const postId = req.params.id;
 
-    res.status(200).json({
-      response: {
-        post,
-      },
-      message: "Post fetched successfully.",
+    db.query("SELECT * FROM posts where id = ? ", postId, (err, result) => {
+      const post = result[0]
+
+      db.query("SELECT * FROM users where id = ? ", post.authorId, (err, result) => {
+        post.author = result[0]
+
+        db.query("SELECT * FROM profiles where userId = ? ", post.authorId, (err, result) => {
+          post.author.profileImageUrl = result[0].profileImageUrl
+
+      res.status(200).json({
+        response: {
+          post,
+        },
+        message: "Post fetched successfully.",
+      });
     });
+    });
+    })
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -67,29 +75,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  /*try {
-    const author = {
-      name: req.user.name,
-      handle: req.user.handle,
-      _id: req.user._id,
-    };
-    const post = await new Post({ author, ...req.body });
-    post.author = author;
-    await post.save();
-    res.status(201).json({
-      response: {
-        post,
-      },
-      message: "Post created successfully.",
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Something went wrong.",
-      error: error.message,
-    });
-  } */
-
   try {
 
 

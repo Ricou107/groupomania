@@ -26,6 +26,7 @@ router.get("/:userId", async (req, res) => {
             db.query("SELECT * FROM users WHERE id = ?", userId, (err, result) => {
               profile.handle = result[0].handle;
               profile.name = result[0].name;
+              profile.createdAt = result[0].createdAt
               for (let i = 0; i < profile.posts.length; i++) {
                 profile.posts[i].author = {}
                 profile.posts[i].author.name = result[0].name;

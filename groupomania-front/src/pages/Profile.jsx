@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
@@ -93,7 +93,7 @@ export default function Profile() {
           </Box>
           <Box textAlign="right" padding="10px 20px">
             <IconButton>
-              <MoreHorizIcon />
+              <SettingsOutlinedIcon fontsize="medium" />
             </IconButton>
             <IconButton>
               <a href={"mailto:" + profile.email}><MailOutlineIcon /></a>
@@ -127,7 +127,7 @@ export default function Profile() {
                 <InsertLinkIcon htmlColor="#555" />
                 <Link
                   sx={{ textDecoration: "none", marginLeft: "6px" }}
-                  href={profile.website || "https:/wasifbaliyan.com"}
+                  href={profile.website || "https:/google.com"}
                 >
                   {profile.website ? profile.website : "www"}
                 </Link>
@@ -135,10 +135,8 @@ export default function Profile() {
               <Box display="flex" marginLeft="1rem">
                 <DateRangeIcon htmlColor="#555" />
                 <Typography sx={{ ml: "6px", color: "#555" }}>
-                  {profile.userId &&
-                    profile.userId &&
-                    profile.userId.createdAt &&
-                    format(new Date(profile.userId.createdAt), "MMM dd yyyy")}
+                  {
+                    format(new Date(profile.createdAt), "MMM dd yyyy")}
                 </Typography>
               </Box>
             </Box>
