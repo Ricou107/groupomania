@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
     });
   }*/
 
-  db.query("SELECT * FROM posts", (err, result) => {
+  db.query("SELECT * FROM posts ORDER BY updatedAt DESC ", (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ err });;

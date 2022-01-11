@@ -68,7 +68,7 @@ export default function LeftSidebar() {
               backgroundColor: "inherit",
             }}
           >
-            <img src="/logo.png" alt="logo" width="50px" />
+            <img src="/logo.png" alt="logo" width="40px" />
           </NavLink>
         </Box>
         <List>
