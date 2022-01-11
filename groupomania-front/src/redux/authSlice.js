@@ -57,11 +57,12 @@ export const authSlice = createSlice({
       state.status = "loading";
     },
     [loginUser.fulfilled]: (state, action) => {
-      const { token, name, email, id } = action.payload.response;
+      const { token, name, email, id, handle } = action.payload.response;
       localStorage.setItem(
         "login",
-        JSON.stringify({ token, email, id, name, isLoggedIn: true })
+        JSON.stringify({ token, email, id, name, handle, isLoggedIn: true })
       );
+      
       state.user.name = name;
       state.user.email = email;
       state.user.id = id;
@@ -78,10 +79,10 @@ export const authSlice = createSlice({
     },
     [registerUser.fulfilled]: (state, action) => {
       state.status = "success";
-      const { token, name, email } = action.payload.response;
+      const { token, name, email, handle } = action.payload.response;
       localStorage.setItem(
         "login",
-        JSON.stringify({ token, name, email, isLoggedIn: true })
+        JSON.stringify({ token, name, email, handle, isLoggedIn: true })
       );
       state.user.name = name;
       state.user.email = email;

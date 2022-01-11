@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Box } from "@mui/system";
 import {
-  Button,
   CircularProgress,
   Grid,
   IconButton,
@@ -21,7 +20,6 @@ import { useParams } from "react-router";
 import { getProfile } from "../redux/authSlice";
 import { Link as RouteLink } from "react-router-dom";
 import { getFollowers, getFollowings } from "../redux/followSlice";
-import { followAccount, followingAccount } from "../api";
 import format from "date-fns/format";
 
 export default function Profile() {
@@ -29,9 +27,7 @@ export default function Profile() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { profile, status } = useSelector((state) => state.auth);
-  const { followingStatus, followerStatus, followers, followings } =
-    useSelector((state) => state.follow);
-  const { _id } = JSON.parse(localStorage.getItem("login"));
+  //const { id } = JSON.parse(localStorage.getItem("login"));
 
   useEffect(() => {
     dispatch(getProfile(id));
@@ -44,32 +40,9 @@ export default function Profile() {
     }
   }, [dispatch, profile.userId]);
 
-  const handleFollow = async () => {
-    const responseFollow = await followAccount({
-      userId: profile.userId._id,
-      followerId: _id,
-    });
-    const responseFlwing = await followingAccount({
-      followingId: profile.userId._id,
-      userId: _id,
-    });
-    if (responseFollow) {
-      dispatch(getFollowers(id));
-    }
-    if (responseFlwing) {
-      dispatch(getFollowings(id));
-    }
-  };
 
-  function hideFollow() {
-    if (profile.userId) {
-      if (followings.length !== 0) {
-        return (
-          followings[0].followingId.includes(_id) || _id === profile.userId._id
-        );
-      }
-    }
-  }
+
+  
 
   return (
     <Box>
@@ -125,31 +98,14 @@ export default function Profile() {
             <IconButton>
               <MailOutlineIcon />
             </IconButton>
-            {!hideFollow() && (
-              <Button
-                onClick={handleFollow}
-                size="small"
-                sx={{
-                  borderRadius: theme.shape.borderRadius,
-                  textTransform: "capitalize",
-                  padding: "6px 20px",
-                  background: "black",
-                  "&:hover": {
-                    background: "#333",
-                  },
-                }}
-                variant="contained"
-              >
-                Follow
-              </Button>
-            )}
+          
           </Box>
           <Box padding="10px 20px">
             <Typography variant="h6" sx={{ fontWeight: "500" }}>
-              {profile.userId && profile.userId.name}
+              {profile.name}
             </Typography>
             <Typography sx={{ fontSize: "14px", color: "#555" }}>
-              @{profile.userId && profile.userId.handle}
+              @{profile.handle}
             </Typography>
             <Typography fontSize="16px" color="#333" padding="10px 0">
               {profile.bio}
@@ -185,24 +141,7 @@ export default function Profile() {
                 </Typography>
               </Box>
             </Box>
-            <Box display="flex">
-              <Typography color="#555" marginRight="1rem">
-                <strong style={{ color: "black" }}>
-                  {followingStatus === "success" &&
-                    followings.length !== 0 &&
-                    followings[0].followingId.length}
-                </strong>
-                Following
-              </Typography>
-              <Typography color="#555" marginRight="1rem">
-                <strong style={{ color: "black" }}>
-                  {followerStatus === "success" &&
-                    followers.length !== 0 &&
-                    followers[0].followerId.length}
-                </strong>
-                Followers
-              </Typography>
-            </Box>
+           
           </Box>
           <Box borderBottom="1px solid #ccc">
             <Typography

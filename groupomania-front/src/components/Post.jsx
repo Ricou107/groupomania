@@ -11,10 +11,8 @@ import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import React, { useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import SyncIcon from "@mui/icons-material/Sync";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import IosShareIcon from "@mui/icons-material/IosShare";
 import { Link } from "react-router-dom";
 import { addComment, deletePost, likeOrDislikePost } from "../api";
 import { useDispatch } from "react-redux";
@@ -85,9 +83,9 @@ export default function Post({ post, profile }) {
         >
           <Grid container flexWrap="nowrap">
             <Grid item sx={{ paddingRight: "1rem" }}>
-              <Link to={`/profile/${post.author.id}`}>
+              <Link to={`/profile/${post.authorId}`}>
                 <img src="/logo.png" alt="lgoog" width="50px" />
-              </Link>
+              </Link> 
             </Grid>
             <Grid item flexGrow="1">
               <Box>
@@ -163,6 +161,7 @@ export default function Post({ post, profile }) {
                   justifyContent="space-between"
                   marginRight="5rem"
                   marginTop=".8rem"
+                  width = "80px"
                 >
                   <IconButton
                     onClick={(e) => {
@@ -173,9 +172,7 @@ export default function Post({ post, profile }) {
                   >
                     <ChatBubbleOutlineIcon fontSize="small" />
                   </IconButton>
-                  <IconButton size="small">
-                    <SyncIcon fontSize="small" />
-                  </IconButton>
+
                   <IconButton onClick={handleLike} size="small">
                     {post.isLiked ? (
                       <FavoriteIcon fontSize="small" />
@@ -183,9 +180,7 @@ export default function Post({ post, profile }) {
                       <FavoriteBorderIcon fontSize="small" />
                     )}
                   </IconButton>
-                  <IconButton size="small">
-                    <IosShareIcon fontSize="small" />
-                  </IconButton>
+
                 </Box>
               </Box>
             </Grid>

@@ -22,7 +22,14 @@ const verifyAuthentication = async (req, res, next) => {
           err
         }) 
       } */ else {
-        next();
+        db.query("SELECT * FROM users WHERE id = ?", decoded.id, (err, result) => {
+          req.user = {
+            name: result[0].name,
+            handle: result[0].handle,
+            id: result[0].id
+          }
+          next();
+        })
       }
     });
   }

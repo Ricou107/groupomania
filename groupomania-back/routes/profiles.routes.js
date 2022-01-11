@@ -22,10 +22,21 @@ router.get("/:userId", async (req, res) => {
             console.log(err);
             return res.status(500).json({ err });
           } else {
-            profile.posts = result
-            res.status(200).json({
-              message: "Profile fetched successfully.",
-              profile,
+            profile.posts = result;
+            const createdAt =  result[0].createdAt
+            db.query("SELECT * FROM users WHERE id = ?", userId, (err, result) => {
+              profile.handle = result[0].handle;
+              profile.name = result[0].name;
+              for (let i = 0; i < profile.posts.length; i++) {
+                profile.posts[i].author = {}
+                profile.posts[i].author.name = result[0].name;
+                profile.posts[i].author.handle = result[0].handle; 
+                profile.posts[i].author.createdAt = createdAt
+              }
+              res.status(200).json({
+                message: "Profile fetched successfully.",
+                profile,
+              });
             });
           }
         })

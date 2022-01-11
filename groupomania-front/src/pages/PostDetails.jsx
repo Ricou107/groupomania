@@ -16,11 +16,9 @@ import React, { useEffect, useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import SyncIcon from "@mui/icons-material/Sync";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-import IosShareIcon from "@mui/icons-material/IosShare";
 import { useHistory, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getComments, getPostDetails } from "../redux/postSlice";
@@ -185,9 +183,7 @@ export default function PostDetails() {
               <IconButton size="small">
                 <ChatBubbleOutlineIcon fontSize="small" />
               </IconButton>
-              <IconButton size="small">
-                <SyncIcon fontSize="small" />
-              </IconButton>
+
               <IconButton onClick={handleLike} size="small">
                 {postDetails.isLiked ? (
                   <FavoriteIcon fontSize="small" />
@@ -195,9 +191,7 @@ export default function PostDetails() {
                   <FavoriteBorderIcon fontSize="small" />
                 )}
               </IconButton>
-              <IconButton size="small">
-                <IosShareIcon fontSize="small" />
-              </IconButton>
+
             </Box>
             <Box>
               <Grid container>

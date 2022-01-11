@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/post.model");
 const Like = require("../models/like.model");
+const db = require('../config/db');
+
 
 router.get("/", async (req, res) => {
   /*try {
@@ -30,35 +32,22 @@ router.get("/", async (req, res) => {
     });
   }*/
 
-  res.status(200).json({
-    response : {
-      posts : [
-        {
-          _id: "61d7809e5d360082b17defca",
-          text: "Test it out!",
-          author: {
-            _id: "61ae5f46c98bf7fb00a38b05",
-            email: "tomato@mail.com",
-            handle: "tomato",
-            name: "Mr. Tomato",
-            password: "$2b$10$D.hCCW3wvnUBTVjQigLZreeSYkfBSe9v0UI17/7JtgFaQeXHLIrEW",
-            createdAt: "2021-12-06T19:06:46.883Z",
-            updatedAt: "2021-12-06T19:06:46.883Z",
-            __v: 0
-          },
-          likes: [
-            "61dc2e15434cfdabe8c7ae0f"
-          ],
-          comments: [],
-          isLiked: false,
-          commentsCount: 0,
-          likesCount: 0,
-          createdAt: "2022-01-06T23:51:58.206Z",
-          updatedAt: "2022-01-10T13:01:09.180Z",
-          __v: 5
+  db.query("SELECT * FROM posts", (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ err });;
+    } else {
+      let posts = result
+      let row
+
+      db.query("SELECT * FROM users WHERE id = ?", posts[0].authorId, (err, result) => {
+        for (let i = 0; i < posts.length; i++) {
+          posts[i].author = result[0];
         }
-      ]
-    }
+        res.status(200).json({ response: { posts: posts } })
+      })
+
+    };
   })
 
 });
@@ -88,7 +77,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  try {
+  /*try {
     const author = {
       name: req.user.name,
       handle: req.user.handle,
@@ -109,7 +98,26 @@ router.post("/", async (req, res) => {
       message: "Something went wrong.",
       error: error.message,
     });
+  } */
+
+  try {
+   
+
+      let authorId = req.user.id
+      let text = req.body.text
+
+    db.query("INSERT INTO posts (text, authorId, likes, comments, isLiked) VALUES (?,?,?,?,?)", [text, authorId, 0, 0, 1]);
+    res.status(201).json({
+      message: "Post created successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "Something went wrong.",
+      error: error.message,
+    });
   }
+ 
 });
 
 router.delete("/:id", async (req, res) => {
