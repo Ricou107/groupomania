@@ -37,13 +37,20 @@ router.get("/", async (req, res) => {
       console.log(err);
       return res.status(500).json({ err });;
     } else {
-      let posts = result
-      let row
+      const posts = result
 
-      db.query("SELECT * FROM users WHERE id = ?", posts[0].authorId, (err, result) => {
+      db.query("SELECT * FROM users",(err, result) => {
+        let users = result
+
         for (let i = 0; i < posts.length; i++) {
-          posts[i].author = result[0];
-        }
+          let idFrompost = posts[i].authorId;
+          let idFromUser = 0;
+          for (let j = 0; j < users.length; j++) {
+            if (posts[i].authorId == users[j].id) {
+              posts[i].author = users[j]
+            }
+          }
+      } 
         res.status(200).json({ response: { posts: posts } })
       })
 
