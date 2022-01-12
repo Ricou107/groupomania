@@ -101,8 +101,8 @@ export default function LeftSidebar() {
               </Hidden>
             </ListItem>
           </NavLink>
-          
-         
+
+
           <NavLink
             to={`/profile/${id}`}
             style={{
@@ -205,6 +205,22 @@ export default function LeftSidebar() {
           >
             Logout
           </MenuItem>
+          <NavLink
+            to={`/modifyProfile/${id}`}
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              backgroundColor: "inherit",
+            }}
+          >
+          <MenuItem
+            onClick={() => {
+              handleClose();
+            }}
+          >
+            Modifier son profil
+          </MenuItem>
+          </NavLink>
         </Menu>
       </Box>
       {openModal && (

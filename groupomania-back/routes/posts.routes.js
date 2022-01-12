@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
       console.log(err);
       return res.status(500).json({ err });;
     } else {
-      const posts = result
+      let posts = result
 
       db.query("SELECT * FROM users", (err, result) => {
         let users = result
@@ -33,7 +33,19 @@ router.get("/", async (req, res) => {
               }
             }
           }
-          res.status(200).json({ response: { posts: posts } })
+          db.query("SELECT * FROM likes", (err, result) => {
+            for (let i = 0; i < posts.length; i++) {
+              for (let j = 0; j < result.length; j++) {
+                if (req.user.id == result[j].authorId && posts[i].id == result[j].postId) {
+
+                  posts[i].isLiked = 1;
+                }
+              }
+            }
+
+
+            res.status(200).json({ response: { posts: posts } })
+          })
         })
       })
 
@@ -56,14 +68,21 @@ router.get("/:id", async (req, res) => {
         db.query("SELECT * FROM profiles where userId = ? ", post.authorId, (err, result) => {
           post.author.profileImageUrl = result[0].profileImageUrl
 
-      res.status(200).json({
-        response: {
-          post,
-        },
-        message: "Post fetched successfully.",
+          db.query("SELECT * FROM likes", (err, result) => {
+            for (let j = 0; j < result.length; j++) {
+              if (req.user.id == result[j].authorId && post.id == result[j].postId) {
+                post.isLiked = 1;
+              }
+            }
+            res.status(200).json({
+              response: {
+                post,
+              },
+              message: "Post fetched successfully.",
+            });
+          });
+        });
       });
-    });
-    });
     })
   } catch (error) {
     console.error(error);
@@ -81,7 +100,7 @@ router.post("/", async (req, res) => {
     let authorId = req.user.id
     let text = req.body.text
 
-    db.query("INSERT INTO posts (text, authorId, likes, comments, isLiked) VALUES (?,?,?,?,?)", [text, authorId, 0, 0, 1]);
+    db.query("INSERT INTO posts (text, authorId, likes, comments, isLiked) VALUES (?,?,?,?,?)", [text, authorId, 0, 0, 0]);
     res.status(201).json({
       message: "Post created successfully.",
     });
@@ -97,19 +116,27 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const userId = req.user._id;
-    const id = req.params.id;
-    const post = await Post.findOneAndDelete({ id, author: userId });
-    if (!post) {
-      res.status(404).json({
-        message: "Post couldn't be found.",
-      });
-    }
-    res.json({
-      response: {
-        post,
-      },
-      message: "Post deleted successfully",
+    const userId = req.user.id;
+    const postId = req.params.id;
+
+    db.query("SELECT * FROM posts where id = ? ", postId, (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ err });;
+      } else {
+        if (userId == result[0].authorId) {
+          db.query("DELETE FROM posts WHERE id = ? ", postId, (err, result) => {
+            if (err) {
+              console.log(err);
+              return res.status(500).json({ err });;
+            } else {
+              res.json({ message: "Post deleted successfully", result });
+            }
+          });
+        } else {
+          res.json({ message: "Vous n\avez pas les droits." })
+        }
+      }
     });
   } catch (error) {
     console.error(error);
@@ -123,35 +150,40 @@ router.delete("/:id", async (req, res) => {
 // like and unlike a post
 router.post("/likes", async (req, res) => {
   try {
-    const userId = req.user._id;
-    const post = await Post.findOne({ _id: req.body.id });
-    if (!post) {
-      return res.status(404).json({
-        message: "Post couldn't be found.",
-      });
-    }
-    const foundLike = await Like.findOne({ postId: post._id, author: userId });
-    if (!foundLike) {
-      post.isLiked = true;
-      const newLike = await new Like({ postId: post._id, author: userId });
-      await newLike.save();
-      post.likes.push(newLike);
-    } else {
-      post.isLiked = false;
-      await Like.findOneAndDelete({ postId: post._id, author: userId });
-      const foundIndex = post.likes.indexOf(foundLike._id);
-      post.likes.splice(foundIndex, 1);
-    }
+    const userId = req.user.id;
+    const postId = req.body.id
 
-    await post.save();
-    res.status(200).json({
-      response: { post },
-      message: "Post updated successfully.",
-    });
+    db.query("select EXISTS(SELECT 1 FROM likes WHERE postId=?) AND EXISTS(SELECT 1 FROM likes WHERE authorId = ?)", [postId, userId], (err, result) => { 
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ err });;
+      } else {
+        if (Object.values(result[0])[0] == 1) {
+          db.query("DELETE FROM likes WHERE authorId = ? AND postId = ?", [userId, postId], (err, result) => {
+            db.query("UPDATE posts SET likes = likes - 1 WHERE id = ?", postId)
+            res.status(200).json({
+              response: { postId, userId },
+              message: "Post updated successfully.",
+            });
+          })
+        } else {
+          db.query("INSERT INTO likes (authorId, postId) VALUES (?, ?)", [userId, postId], (err,result) => {
+            db.query("UPDATE posts SET likes = likes + 1 WHERE id = ?", postId)
+            res.status(200).json({
+              response: { postId, userId },
+              message: "Post updated successfully.",
+            });
+          })
+        }
+      }
+    })
+  
+
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      message: "Something went wrong.",
+      response: { message: "Something went wrong." },
       error: error.message,
     });
   }

@@ -1,8 +1,8 @@
-import { Grid, IconButton, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { parseDate } from "../utils/parseDate";
+
 
 export default function Comment({ comment }) {
   return (
@@ -16,7 +16,7 @@ export default function Comment({ comment }) {
     >
       <Grid container flexWrap="nowrap">
         <Grid item sx={{ paddingRight: "1rem" }}>
-          <img src="/logo.png" alt="lgoog" width="50px" />
+          <img src={comment.profileImageUrl} alt="lgoog" width="50px" />
         </Grid>
         <Grid item flexGrow="1">
           <Box>
@@ -31,12 +31,12 @@ export default function Comment({ comment }) {
                   <Typography
                     sx={{ fontSize: "16px", fontWeight: 500, mr: "6px" }}
                   >
-                    {comment.author.name}
+                    {comment.name}
                   </Typography>
                   <Typography
                     sx={{ fontSize: "15px", mr: "6px", color: "#555" }}
                   >
-                    @{comment.author.handle}
+                    @{comment.handle}
                   </Typography>
                   <Typography
                     sx={{ fontSize: "15px", mr: "6px", color: "#555" }}
@@ -46,20 +46,20 @@ export default function Comment({ comment }) {
                   <Typography
                     sx={{ fontSize: "15px", mr: "6px", color: "#555" }}
                   >
-                    {parseDate(comment.createdAt)}
+                    {parseDate(comment.commentCreatedAt)}
                   </Typography>
                 </Box>
                 <Box>
                   <Typography sx={{ fontSize: "15px", color: "#555" }}>
-                    {comment.text}
+                    {comment.comment}
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item>
+              {/*<Grid item>
                 <IconButton>
                   <MoreHorizIcon />
                 </IconButton>
-              </Grid>
+              </Grid>*/}
             </Grid>
             {/* <Box
                 display="flex"

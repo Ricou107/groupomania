@@ -33,7 +33,7 @@ export const postSlice = createSlice({
   reducers: {
     updateLike: (state, action) => {
       const index = state.posts.findIndex(
-        (post) => post._id === action.payload.id
+        (post) => post.id === action.payload.id
       );
       state.posts[index].isLiked = !state.posts[index].isLiked;
     },

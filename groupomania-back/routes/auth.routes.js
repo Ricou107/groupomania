@@ -115,4 +115,33 @@ router.post("/login", async (req, res) => {
 
 });
 
+router.put("/:id", verifyAuthentication, async (req, res) => {
+
+  const updatedData = req.body;
+  console.log(updatedData)
+  console.log(req.user)
+  if (req.user.id == updatedData.id && req.user.id == req.params.id) {
+    try {
+      db.query("UPDATE users SET email = ?, name = ?, handle = ? WHERE id = ?", [updatedData.email, updatedData.name, updatedData.handle, updatedData.id], (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ err });
+        } else {
+          res.status(200).json({
+            message: "Profile updated successfully.",
+          });
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Something went wrong.",
+      });
+    }
+  } else { res.status(400).json({ message: "You can't do that" }) }
+
+
+});
+
+
 module.exports = router;

@@ -9,7 +9,6 @@ import {
   useTheme,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
@@ -19,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getProfile } from "../redux/authSlice";
 import { Link as RouteLink } from "react-router-dom";
-import { getFollowers, getFollowings } from "../redux/followSlice";
 import format from "date-fns/format";
 
 export default function Profile() {
@@ -32,18 +30,7 @@ export default function Profile() {
   useEffect(() => {
     dispatch(getProfile(id));
   }, [dispatch, id]);
-
-  useEffect(() => {
-    if (profile.userId) {
-      dispatch(getFollowers(profile.userId._id));
-      dispatch(getFollowings(profile.userId._id));
-    }
-  }, [dispatch, profile.userId]);
-
-
-
   
-
   return (
     <Box>
       <Box borderBottom="1px solid #ccc" padding="8px 20px">
@@ -92,9 +79,6 @@ export default function Profile() {
             </Box>
           </Box>
           <Box textAlign="right" padding="10px 20px">
-            <IconButton>
-              <SettingsOutlinedIcon fontsize="medium" />
-            </IconButton>
             <IconButton>
               <a href={"mailto:" + profile.email}><MailOutlineIcon /></a>
               

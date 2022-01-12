@@ -43,9 +43,9 @@ export default function PostDetails() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const { _id } = JSON.parse(localStorage.getItem("login"));
+  const loginStorage = JSON.parse(localStorage.getItem("login"));
   const handleDeletePost = async () => {
-    const response = await deletePost({ id: postDetails._id });
+    const response = await deletePost({ id: postDetails.id });
     if (response) {
       history.push("/");
     }
@@ -53,7 +53,7 @@ export default function PostDetails() {
 
   const handleLike = async (e) => {
     e.preventDefault();
-    const response = await likeOrDislikePost({ id: postDetails._id });
+    const response = await likeOrDislikePost({ id: postDetails.id });
     if (response) {
       dispatch(getPostDetails(id));
       dispatch(getComments(id));
@@ -72,6 +72,9 @@ export default function PostDetails() {
       setCommentText("");
     }
   };
+
+
+  
 
   return (
     <Box>
@@ -98,7 +101,7 @@ export default function PostDetails() {
             <Box>
               <Grid container alignItems="center">
                 <Grid item  marginRight="15px"  >
-                  <img src={postDetails.author.profileImageUrl} alt="profile" width="60px"/>
+                  <img src={postDetails.author} alt="profile" width="60px"/>
                 </Grid>
                 <Grid item flexGrow="1">
                   <Grid container justifyContent="space-between">
@@ -111,39 +114,36 @@ export default function PostDetails() {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      {status === "success" &&
-                        postDetails.author &&
-                        _id === postDetails.author._id && (
-                          <IconButton
-                            aria-expanded={open ? "true" : undefined}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleClick(e);
-                            }}
-                          >
-                            <MoreHorizIcon />
-                          </IconButton>
-                        )}
-
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                          "aria-labelledby": "basic-button",
+                    {postDetails.authorId === loginStorage.id && (
+                      <IconButton
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleClick(e);
                         }}
                       >
-                        <MenuItem
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handleDeletePost();
-                          }}
-                        >
-                          Delete Post
-                        </MenuItem>
-                      </Menu>
-                    </Grid>
+                        <MoreHorizIcon />
+                      </IconButton>
+                    )}
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      <MenuItem
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDeletePost();
+                        }}
+                      >
+                        Delete Post
+                      </MenuItem>
+                    </Menu>
+                  </Grid>
                   </Grid>
                 </Grid>
               </Grid>
@@ -170,7 +170,7 @@ export default function PostDetails() {
             </Box>
             <Box display="flex" padding="1rem 0" borderBottom="1px solid #ccc">
               <Typography sx={{ fontSize: "14px", mr: "6px", color: "#555" }}>
-                <strong>{postDetails.likes && postDetails.likes.length}</strong>{" "}
+                <strong>{postDetails.likes && postDetails.likes}</strong>{" "}
                 Likes
               </Typography>
             </Box>
@@ -235,7 +235,7 @@ export default function PostDetails() {
               </Box>
               {commentStatus === "success" &&
                 comments.map((comment) => (
-                  <Comment key={comment._id} comment={comment} />
+                  <Comment key={comment.id} comment={comment} />
                 ))}
             </Box>
           </Box>

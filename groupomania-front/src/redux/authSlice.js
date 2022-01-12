@@ -36,6 +36,16 @@ export const getUsers = createAsyncThunk("auth/getUsers", async () => {
   return data;
 });
 
+export const modifyProfile = createAsyncThunk("auth/modifyProfile", async (newData) => {
+  const { data } = await axios.put("/api/profile/" + newData.id, newData);
+  return data;
+});
+
+export const modifyInfos = createAsyncThunk("auth/modifyInfos", async (newDataPersonal) => {
+  const { data } = await axios.put("/auth/" + newDataPersonal.id, newDataPersonal);
+  return data;
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,

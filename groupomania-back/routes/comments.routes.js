@@ -1,25 +1,18 @@
 const express = require("express");
+const db = require("../config/db");
 const router = express.Router();
 const Comment = require("../models/comment.model");
 const Post = require("../models/post.model");
 
 router.get("/:postId", async (req, res) => {
   try {
-    const post = await Post.findOne({ _id: req.params.postId });
-    if (!post) {
-      return res.status(404).json({
-        message: "The post you were looking for is not available.",
-      });
-    }
-    const comments = await Comment.find({ postId: req.params.postId })
-      .populate("author")
-      .exec();
+    const postId = req.params.postId
+      db.query("SELECT * FROM comments JOIN users ON (comments.authorId = users.id) JOIN profiles ON (comments.authorId = profiles.userId) WHERE comments.postId = ? ORDER BY commentCreatedAt DESC", postId, (err, result) => {
     res.status(200).json({
       message: "Comments fetched successfully.",
-      response: {
-        comments,
-      },
+      response : {comments : result}
     });
+  })
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -32,14 +25,10 @@ router.get("/:postId", async (req, res) => {
 router.post("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
-    const author = req.user._id;
-    const comment = await new Comment({ postId, author, text: req.body.text });
-    await comment.save();
+    const authorId = req.user.id;
+    db.query("INSERT INTO comments (postId, authorId, comment) VALUES (?,?,?)", [postId, authorId, req.body.text])
     res.status(201).json({
       message: "Comment created successfully.",
-      response: {
-        comment,
-      },
     });
   } catch (error) {
     console.error(error);

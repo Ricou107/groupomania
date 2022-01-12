@@ -2,6 +2,7 @@ import Login from "./pages/Login";
 
 import Layout from "./components/Layout";
 import Profile from "./pages/Profile";
+import ModifyProfile from "./pages/ModifyProfile";
 import PrivateRoute from "./components/PrivateRoute";
 import { Route, Switch } from "react-router";
 import Home from "./pages/Home";
@@ -30,6 +31,11 @@ function App() {
   }, [dispatch, isLoggedIn]);
   return (
     <Switch>
+    <PrivateRoute exact path="/modifyProfile/:id">
+        <Layout>
+          <ModifyProfile />
+        </Layout>
+        </PrivateRoute>
       <PrivateRoute exact path="/profile/:id">
         <Layout>
           <Profile />
