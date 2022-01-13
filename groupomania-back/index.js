@@ -8,12 +8,10 @@ const profiles = require("./routes/profiles.routes");
 const path = require('path');
 
 
+
 const verifyAuthentication = require("./middlewares/auth.middleware");
 
 const app = express();
-const connectToDB = require("./db/db");
-
-connectToDB(process.env.DB_URL);
 
 app.use(cors());
 app.use(express.json());

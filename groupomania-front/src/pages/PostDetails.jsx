@@ -101,7 +101,7 @@ export default function PostDetails() {
             <Box>
               <Grid container alignItems="center">
                 <Grid item  marginRight="15px"  >
-                  <img src={postDetails.author.profileImageUrl} alt="profile" width="60px"/>
+                  <img src='/logo.png' alt="profile" width="60px"/>
                 </Grid>
                 <Grid item flexGrow="1">
                   <Grid container justifyContent="space-between">

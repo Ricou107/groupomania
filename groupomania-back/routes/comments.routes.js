@@ -1,8 +1,8 @@
 const express = require("express");
 const db = require("../config/db");
 const router = express.Router();
-const Comment = require("../models/comment.model");
-const Post = require("../models/post.model");
+//const Comment = require("../models/comment.model");
+//const Post = require("../models/post.model");
 
 router.get("/:postId", async (req, res) => {
   try {
