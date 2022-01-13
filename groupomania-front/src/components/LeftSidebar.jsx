@@ -48,8 +48,15 @@ export default function LeftSidebar() {
   };
 
   const [postText, setPostText] = React.useState("");
+  const [postImage, setPostImage] = React.useState("");
+
+
   const handleAddPost = async () => {
-    const data = await addPost({ text: postText });
+    const formData = new FormData()
+    formData.append('image', postImage)
+    formData.append('text', postText)
+      
+      const data = await addPost(formData);
     if (data) {
       dispatch(getPosts());
       setPostText("");
@@ -237,6 +244,7 @@ export default function LeftSidebar() {
                 <img src="/logo.png" alt="logo" width="60px" />
               </Grid>
               <Grid item flexGrow="1">
+             
                 <Box padding=".5rem 0">
                   <Input
                     value={postText}
@@ -248,6 +256,15 @@ export default function LeftSidebar() {
                     placeholder="What's happening?"
                     sx={{ width: "100%" }}
                   />
+                   <Box
+            >
+            <Input 
+            type="file" 
+            name="file" 
+            disableUnderline
+            title="Ajoutez une image !"
+            onChange={(e) => setPostImage(e.target.files[0])}/>
+            </Box>
                 </Box>
               </Grid>
             </Grid>

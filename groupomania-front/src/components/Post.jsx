@@ -85,7 +85,7 @@ export default function Post({ post, profile }) {
             <Grid item sx={{ paddingRight: "1rem" }}>
               <Link to={`/profile/${post.authorId}`}>
                 <img src={post.author.profileImageUrl} alt="lgoog" width="50px" />
-              </Link> 
+              </Link>
             </Grid>
             <Grid item flexGrow="1">
               <Box>
@@ -122,6 +122,13 @@ export default function Post({ post, profile }) {
                       <Typography sx={{ fontSize: "15px", color: "#555" }}>
                         {post.text}
                       </Typography>
+                    </Box>
+                    <Box maxWidth = "500px">
+                      <img
+                        width="90%"
+                        src={post.image}
+                        alt="background"
+                      />
                     </Box>
                   </Grid>
                   <Grid item>
@@ -161,7 +168,7 @@ export default function Post({ post, profile }) {
                   justifyContent="space-between"
                   marginRight="5rem"
                   marginTop=".8rem"
-                  width = "80px"
+                  width="80px"
                 >
                   <IconButton
                     onClick={(e) => {

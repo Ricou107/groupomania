@@ -153,6 +153,13 @@ export default function PostDetails() {
                 {postDetails.text}
               </Typography>
             </Box>
+            <Box>
+                      <img
+                        width="100%"
+                        src={postDetails.image}
+                        alt="background"
+                      />
+                    </Box>
             <Box display="flex" padding="1rem 0" borderBottom="1px solid #ccc">
               <Typography sx={{ fontSize: "14px", mr: "6px", color: "#555" }}>
                 {postDetails &&

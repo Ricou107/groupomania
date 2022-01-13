@@ -9,16 +9,21 @@ export default function AddPost() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [postText, setPostText] = useState("");
-  const [postImage, setPostImage] = useState(null);
+  const [postImage, setPostImage] = useState("");
 
   const handleAddPost = async () => {
-    const data = await addPost({ text: postText, image: postImage });
-    if (data) {
-      dispatch(getPosts());
-      setPostText("");
+    const formData = new FormData()
+    formData.append('image', postImage)
+    formData.append('text', postText)
+      
+      const data = await addPost(formData);
+      if (data) {
+        dispatch(getPosts());
+        setPostText("");
+        setPostImage('');
+      } 
     }
-  };
-
+   
   return (
     <Box padding="1rem 1rem 0 1rem" borderBottom="1px solid #ccc">
       <Grid container>
@@ -46,16 +51,16 @@ export default function AddPost() {
           >
             <Box
             >
-              <input
-                onChange={(e) => setPostImage(e.target.files[0])}
-                type="file"
-                accept="image/*"
-                name="selectedFile"
-              />
+            <Input 
+            type="file" 
+            name="file" 
+            disableUnderline
+            title="Ajoutez une image !"
+            onChange={(e) => setPostImage(e.target.files[0])}/>
             </Box>
             <Button
               onClick={handleAddPost}
-              disabled={postText.length === 0 && postImage === null}
+              disabled={postText.length === 0}
               variant="contained"
               color="primary"
               sx={{

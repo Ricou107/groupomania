@@ -98,15 +98,22 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", multer, async (req, res) => {
+
+  
   try {
 
+    let imageUrl = ''
 
+    if (req.file) {
+      imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } else {
+      imageUrl = null
+    }
+  
     let authorId = req.user.id
     let text = req.body.text
 
-    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-
-    console.log(imageUrl)
+    console.log(req.file)
 
     db.query("INSERT INTO posts (text, authorId, likes, comments, isLiked, image) VALUES (?,?,?,?,?,?)", [text, authorId, 0, 0, 0, imageUrl]);
     res.status(201).json({
