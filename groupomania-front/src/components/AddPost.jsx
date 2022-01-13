@@ -9,13 +9,16 @@ export default function AddPost() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [postText, setPostText] = useState("");
+  const [postImage, setPostImage] = useState(null);
+
   const handleAddPost = async () => {
-    const data = await addPost({ text: postText });
+    const data = await addPost({ text: postText, image: postImage });
     if (data) {
       dispatch(getPosts());
       setPostText("");
     }
   };
+
   return (
     <Box padding="1rem 1rem 0 1rem" borderBottom="1px solid #ccc">
       <Grid container>
@@ -41,9 +44,18 @@ export default function AddPost() {
             paddingTop=".5rem"
             borderTop="1px solid #ccc"
           >
+            <Box
+            >
+              <input
+                onChange={(e) => setPostImage(e.target.files[0])}
+                type="file"
+                accept="image/*"
+                name="selectedFile"
+              />
+            </Box>
             <Button
               onClick={handleAddPost}
-              disabled={postText.length === 0}
+              disabled={postText.length === 0 && postImage === null}
               variant="contained"
               color="primary"
               sx={{

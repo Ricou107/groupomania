@@ -5,6 +5,8 @@ const auth = require("./routes/auth.routes");
 const posts = require("./routes/posts.routes");
 const comments = require("./routes/comments.routes");
 const profiles = require("./routes/profiles.routes");
+const path = require('path');
+
 
 const verifyAuthentication = require("./middlewares/auth.middleware");
 
@@ -23,6 +25,7 @@ app.get("/", (req, res) => {
   });
 });
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/auth", auth);
 app.use(verifyAuthentication);
 app.use("/api/posts", posts);

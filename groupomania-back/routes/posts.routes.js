@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const Post = require("../models/post.model");
-const Like = require("../models/like.model");
+//const Post = require("../models/post.model");
+//const Like = require("../models/like.model");
 const db = require('../config/db');
+const multer = require('../middlewares/multer-config');
+const fs = require('fs');
+
+
 
 
 router.get("/", async (req, res) => {
@@ -93,14 +97,18 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", multer, async (req, res) => {
   try {
 
 
     let authorId = req.user.id
     let text = req.body.text
 
-    db.query("INSERT INTO posts (text, authorId, likes, comments, isLiked) VALUES (?,?,?,?,?)", [text, authorId, 0, 0, 0]);
+    const imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
+    console.log(imageUrl)
+
+    db.query("INSERT INTO posts (text, authorId, likes, comments, isLiked, image) VALUES (?,?,?,?,?,?)", [text, authorId, 0, 0, 0, imageUrl]);
     res.status(201).json({
       message: "Post created successfully.",
     });
@@ -110,8 +118,7 @@ router.post("/", async (req, res) => {
       message: "Something went wrong.",
       error: error.message,
     });
-  }
-
+  } 
 });
 
 router.delete("/:id", async (req, res) => {
