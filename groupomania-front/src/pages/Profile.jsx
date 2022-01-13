@@ -141,7 +141,7 @@ export default function Profile() {
           </Box>
           {profile.posts &&
             profile.posts.map((post) => (
-              <Post key={post._id} post={post} profile={true} />
+              <Post key={post.id} post={post} profile={true} />
             ))}
         </Box>
       )}

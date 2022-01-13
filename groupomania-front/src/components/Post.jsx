@@ -33,6 +33,7 @@ export default function Post({ post, profile }) {
     setAnchorEl(null);
   };
   const { id } = JSON.parse(localStorage.getItem("login"));
+  
   const handleLike = async (e) => {
     e.preventDefault();
     dispatch(updateLike({ id: post.id }));
@@ -123,6 +124,7 @@ export default function Post({ post, profile }) {
                         {post.text}
                       </Typography>
                     </Box>
+                    {post.image !== null && (
                     <Box maxWidth = "500px">
                       <img
                         width="90%"
@@ -130,6 +132,7 @@ export default function Post({ post, profile }) {
                         alt="background"
                       />
                     </Box>
+                    )}
                   </Grid>
                   <Grid item>
                     {post.author.id === id && (

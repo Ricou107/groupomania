@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, Typography } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect } from "react";
 import Post from "../components/Post";
@@ -18,7 +18,7 @@ export default function Home() {
       <Box borderBottom="1px solid #ccc" padding="8px 20px">
         <Grid container justifyContent="space-between" alignItems="center">
           <Grid item>
-            <Typography variant="h6">Home</Typography>
+          <img src="/icon-left-font.png" alt="logo" width="200px"/>
           </Grid>
   
         </Grid>

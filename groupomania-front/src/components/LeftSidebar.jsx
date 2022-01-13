@@ -66,7 +66,7 @@ export default function LeftSidebar() {
   return (
     <>
       <Box sx={{ height: "100vh", maxWidth: "100%" }}>
-        <Box textAlign="center">
+        <Box textAlign="center" marginTop="10px">
           <NavLink
             to="/"
             style={{

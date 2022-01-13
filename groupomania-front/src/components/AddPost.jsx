@@ -20,7 +20,7 @@ export default function AddPost() {
       if (data) {
         dispatch(getPosts());
         setPostText("");
-        setPostImage('');
+        setPostImage("");
       } 
     }
    
@@ -60,7 +60,7 @@ export default function AddPost() {
             </Box>
             <Button
               onClick={handleAddPost}
-              disabled={postText.length === 0}
+              disabled={postText.length === 0 && postImage.length === 0}
               variant="contained"
               color="primary"
               sx={{

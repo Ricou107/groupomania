@@ -113,8 +113,6 @@ router.post("/", multer, async (req, res) => {
     let authorId = req.user.id
     let text = req.body.text
 
-    console.log(req.file)
-
     db.query("INSERT INTO posts (text, authorId, likes, comments, isLiked, image) VALUES (?,?,?,?,?,?)", [text, authorId, 0, 0, 0, imageUrl]);
     res.status(201).json({
       message: "Post created successfully.",

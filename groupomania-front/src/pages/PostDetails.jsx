@@ -101,7 +101,7 @@ export default function PostDetails() {
             <Box>
               <Grid container alignItems="center">
                 <Grid item  marginRight="15px"  >
-                  <img src={postDetails.author} alt="profile" width="60px"/>
+                  <img src={postDetails.author.profileImageUrl} alt="profile" width="60px"/>
                 </Grid>
                 <Grid item flexGrow="1">
                   <Grid container justifyContent="space-between">
@@ -153,13 +153,16 @@ export default function PostDetails() {
                 {postDetails.text}
               </Typography>
             </Box>
+            {postDetails.image !== null && (
             <Box>
                       <img
                         width="100%"
                         src={postDetails.image}
+                        
                         alt="background"
                       />
                     </Box>
+            )}
             <Box display="flex" padding="1rem 0" borderBottom="1px solid #ccc">
               <Typography sx={{ fontSize: "14px", mr: "6px", color: "#555" }}>
                 {postDetails &&
