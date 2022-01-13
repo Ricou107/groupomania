@@ -33,14 +33,14 @@ async function initialize() {
     db2.query("CREATE TABLE IF NOT EXISTS `comments` (`id` INTEGER NOT NULL auto_increment PRIMARY KEY , `userId` INTEGER NOT NULL, `authorId` INTEGER NOT NULL, `text` VARCHAR(255) NOT NULL)")
         
 
-}  */
+}  */ 
 
 var con = mysql.createConnection({
     host: `${process.env.HOST}`,
     user: `${process.env.DB_USER}`,
     password: `${process.env.DB_PASSWORD}`
   });
-   
+    
   con.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
