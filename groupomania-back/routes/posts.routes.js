@@ -7,7 +7,7 @@ const db = require('../config/db');
 
 router.get("/", async (req, res) => {
 
-  db.query("SELECT * FROM posts ORDER BY updatedAt DESC ", (err, result) => {
+  db.query("SELECT * FROM posts ORDER BY createdAt DESC ", (err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).json({ err });;
@@ -153,7 +153,9 @@ router.post("/likes", async (req, res) => {
     const userId = req.user.id;
     const postId = req.body.id
 
-    db.query("select EXISTS(SELECT 1 FROM likes WHERE postId=?) AND EXISTS(SELECT 1 FROM likes WHERE authorId = ?)", [postId, userId], (err, result) => { 
+    console.log(userId, postId)
+
+    db.query(" SELECT EXISTS(SELECT 1 FROM likes WHERE postId= ? and authorId = ?)", [postId, userId], (err, result) => { 
       if (err) {
         console.log(err);
         return res.status(500).json({ err });;
