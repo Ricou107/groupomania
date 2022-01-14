@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId
-      db.query("SELECT * FROM comments JOIN users ON (comments.authorId = users.id) JOIN profiles ON (comments.authorId = profiles.userId) WHERE comments.postId = ? ORDER BY commentCreatedAt DESC", postId, (err, result) => {
+      db.query("SELECT *, comments.id as commentId FROM comments JOIN users ON (comments.authorId = users.id) JOIN profiles ON (comments.authorId = profiles.userId) WHERE comments.postId = ? ORDER BY commentCreatedAt DESC", postId, (err, result) => {
     res.status(200).json({
       message: "Comments fetched successfully.",
       response : {comments : result}

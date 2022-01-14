@@ -70,7 +70,7 @@ router.get("/:id", async (req, res) => {
         post.author = result[0]
 
         db.query("SELECT * FROM profiles where userId = ? ", post.authorId, (err, result) => {
-          post.author.profileImageUrl = result[0].profileImageUrl
+          post.profileImageUrl = result[0].profileImageUrl
 
           db.query("SELECT * FROM likes", (err, result) => {
             for (let j = 0; j < result.length; j++) {

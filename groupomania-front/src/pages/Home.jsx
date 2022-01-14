@@ -31,7 +31,7 @@ export default function Home() {
           )}
         </Box>
         {status === "success" &&
-          posts.map((post) => <Post key={post._id} post={post} />)}
+          posts.map((post) => <Post key={post.id} post={post} />)}
       </Box>
     </Box>
   );

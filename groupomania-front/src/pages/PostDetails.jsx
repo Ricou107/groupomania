@@ -74,6 +74,7 @@ export default function PostDetails() {
   };
 
 
+
   
 
   return (
@@ -101,7 +102,7 @@ export default function PostDetails() {
             <Box>
               <Grid container alignItems="center">
                 <Grid item  marginRight="15px"  >
-                  <img src='/logo.png' alt="profile" width="60px"/>
+                <img src={postDetails.profileImageUrl} alt="profile" width="60px"/> 
                 </Grid>
                 <Grid item flexGrow="1">
                   <Grid container justifyContent="space-between">
@@ -203,6 +204,7 @@ export default function PostDetails() {
               </IconButton>
 
             </Box>
+            
             <Box>
               <Grid container>
                 <Grid item>
@@ -238,6 +240,7 @@ export default function PostDetails() {
                   </Box>
                 </Grid>
               </Grid>
+              <Box display="flex" padding="1rem 0" borderBottom="1px solid #ccc"></Box>
               <Box textAlign="center" marginTop="1rem">
                 {commentStatus === "loading" && (
                   <CircularProgress size={20} color="primary" />
@@ -245,7 +248,7 @@ export default function PostDetails() {
               </Box>
               {commentStatus === "success" &&
                 comments.map((comment) => (
-                  <Comment key={comment.id} comment={comment} />
+                  <Comment key={comment.commentId} comment={comment} />
                 ))}
             </Box>
           </Box>

@@ -12,6 +12,7 @@ export default function AddPost() {
   const [postImage, setPostImage] = useState("");
 
   const handleAddPost = async () => {
+    URL.revokeObjectURL(postImage)
     const formData = new FormData()
     formData.append('image', postImage)
     formData.append('text', postText)
@@ -23,6 +24,8 @@ export default function AddPost() {
         setPostImage("");
       } 
     }
+
+
    
   return (
     <Box padding="1rem 1rem 0 1rem" borderBottom="1px solid #ccc">
@@ -56,7 +59,9 @@ export default function AddPost() {
             name="file" 
             disableUnderline
             title="Ajoutez une image !"
-            onChange={(e) => setPostImage(e.target.files[0])}/>
+            onChange={(e) => {
+            setPostImage(e.target.files[0]);
+            }}/>
             </Box>
             <Button
               onClick={handleAddPost}
@@ -71,6 +76,7 @@ export default function AddPost() {
               Post
             </Button>
           </Box>
+          {postImage !== '' ? <img src={URL.createObjectURL(postImage)} alt="uploadedPicture"/> : "" }
         </Grid>
       </Grid>
     </Box>
