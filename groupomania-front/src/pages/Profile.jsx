@@ -161,15 +161,7 @@ export default function Profile() {
                   {profile.location}
                 </Typography>
               </Box>
-              <Box display="flex" marginLeft="1rem">
-                <InsertLinkIcon htmlColor="#555" />
-                <Link
-                  sx={{ textDecoration: "none", marginLeft: "6px" }}
-                  href={profile.website || "https:/google.com"}
-                >
-                  {profile.website ? profile.website : "www"}
-                </Link>
-              </Box>
+
               <Box display="flex" marginLeft="1rem">
                 <DateRangeIcon htmlColor="#555" />
                 <Typography sx={{ ml: "6px", color: "#555" }}>
