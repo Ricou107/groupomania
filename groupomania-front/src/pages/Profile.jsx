@@ -7,6 +7,7 @@ import {
   Link,
   Typography,
   useTheme,
+  Button,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -20,7 +21,7 @@ import { useParams } from "react-router";
 import { getProfile } from "../redux/authSlice";
 import { Link as RouteLink } from "react-router-dom";
 import format from "date-fns/format";
-import { modifyProfilePicture } from "../redux/authSlice";
+import { modifyProfilePicture, modifyBackgroundPicture } from "../redux/authSlice";
 
 
 
@@ -44,22 +45,27 @@ export default function Profile() {
   }
 
   const handleProfilePicture = async (e) => {
-    console.log('ok1');
     e.preventDefault();
-    console.log('ok2');
     const formData = new FormData();
-    console.log('ok3');
     formData.append('image', e.target.files[0]);
-    console.log('ok4');
     formData.append('id', loginStorage.id);
-    console.log(formData.get('id'));
-
     dispatch(modifyProfilePicture(formData));
-    console.log('ok6');
 
-    setTimeout(function(){
+    setTimeout(function () {
       dispatch(getProfile(id));
-  }, 100);
+    }, 100);
+  }
+  
+  const handleBackgroundPicture = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    formData.append('id', loginStorage.id);
+    dispatch(modifyBackgroundPicture(formData));
+
+    setTimeout(function () {
+      dispatch(getProfile(id));
+    }, 100);
   }
 
 
@@ -92,11 +98,16 @@ export default function Profile() {
       {status === "success" && (
         <Box height="90vh" sx={{ overflowY: "scroll" }}>
           <Box position="relative">
-            <img
-              width="100%"
-              src={profile.backgroundImageUrl}
-              alt="background"
-            />
+          <Button onClick={onButtonClick}
+                  disabled={parseInt(loginStorage.id) !== parseInt(id)}
+                >
+                  <input type='file' id='file' name="image" ref={inputFile} style={{ display: 'none' }} accept="image/*"
+                    onChange={(e) => {
+                      handleBackgroundPicture(e);
+                    }} />
+                  <img
+                    src={profile.backgroundImageUrl} alt="background" width="100%" />
+                </Button>
             <Box
               sx={{
                 position: "absolute",
@@ -107,8 +118,9 @@ export default function Profile() {
               }}
             >
               <Grid>
-
-                <IconButton onClick={onButtonClick}>
+                <Button onClick={onButtonClick}
+                  disabled={parseInt(loginStorage.id) !== parseInt(id)}
+                >
                   <input type='file' id='file' name="image" ref={inputFile} style={{ display: 'none' }} accept="image/*"
                     onChange={(e) => {
                       handleProfilePicture(e);
@@ -116,8 +128,7 @@ export default function Profile() {
                   <Avatar
                     sx={{ width: 150, height: 150 }}
                     src={profile.profileImageUrl} alt="profile" />
-                </IconButton>
-
+                </Button>
               </Grid>
             </Box>
           </Box>

@@ -168,4 +168,29 @@ router.put("/modifyProfilePicture/:id", verifyAuthentication, multer,  async (re
   } 
 })
 
+router.put("/modifyBackgroundPicture/:id", verifyAuthentication, multer,  async (req, res) => {
+  const id = req.body.id
+  let imageUrl = ''
+
+    if (req.file) {
+      imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } else {
+      imageUrl = null
+    }
+
+  if (req.user.id == id) {
+    db.query("SELECT * FROM profiles WHERE userId = ?", id, (err, result) => {
+      const filename = result[0].backgroundImageUrl.split('/images/');
+      if (filename.length == 2) {
+        fs.unlink(`images/${filename[1]}`, () => {})
+      }
+      db.query("UPDATE profiles SET backgroundImageUrl = ? WHERE UserId = ? ", [imageUrl, id])
+      res.status(200).json({message : 'ok'})
+    })
+    
+  } else {
+    res.status(400).json({message : ' pas ok'})
+  } 
+})
+
 module.exports = router;
