@@ -56,7 +56,8 @@ export default function AddPost() {
             >
             <Input 
             type="file" 
-            name="file" 
+            name="file"
+            inputProps={{ accept: 'image/*' }}
             disableUnderline
             title="Ajoutez une image !"
             onChange={(e) => {

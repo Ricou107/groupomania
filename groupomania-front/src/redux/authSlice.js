@@ -46,6 +46,11 @@ export const modifyInfos = createAsyncThunk("auth/modifyInfos", async (newDataPe
   return data;
 });
 
+export const modifyProfilePicture = createAsyncThunk("auth/modifyProfilePicture", async (newProfilePicture) => {
+  const { data } = await axios.put("/auth/modifyProfilePicture/" + newProfilePicture.get('id'), newProfilePicture);
+  return data;
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,

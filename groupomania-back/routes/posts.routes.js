@@ -125,7 +125,7 @@ router.post("/", multer, async (req, res) => {
     });
   } 
 });
-
+ 
 router.delete("/:id", async (req, res) => {
   try {
     const userId = req.user.id;
@@ -137,6 +137,12 @@ router.delete("/:id", async (req, res) => {
         return res.status(500).json({ err });;
       } else {
         if (userId == result[0].authorId || userId === 1) {
+          db.query("SELECT * FROM posts WHERE id = ?", postId, (err, result) => {
+            if (result[0].image !== null) {
+            const filename = result[0].image.split('/images/');
+            fs.unlink(`images/${filename[1]}`, () => {})
+            }
+          })
           db.query("DELETE FROM posts WHERE id = ? ", postId, (err, result) => {
             if (err) {
               console.log(err);
@@ -147,7 +153,7 @@ router.delete("/:id", async (req, res) => {
           });
         } else {
           res.json({ message: "Vous n\avez pas les droits." })
-        }
+        } 
       }
     });
   } catch (error) {

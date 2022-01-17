@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Box } from "@mui/system";
 import {
   CircularProgress,
@@ -13,12 +13,16 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import DateRangeIcon from "@mui/icons-material/DateRange";
+import Avatar from '@mui/material/Avatar';
 import Post from "../components/Post";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { getProfile } from "../redux/authSlice";
 import { Link as RouteLink } from "react-router-dom";
 import format from "date-fns/format";
+import { modifyProfilePicture } from "../redux/authSlice";
+
+
 
 export default function Profile() {
   const theme = useTheme();
@@ -31,7 +35,34 @@ export default function Profile() {
   useEffect(() => {
     dispatch(getProfile(id));
   }, [dispatch, id]);
-  
+
+  const inputFile = useRef(null)
+  const onButtonClick = async () => {
+    // `current` points to the mounted file input element
+
+    inputFile.current.click()
+  }
+
+  const handleProfilePicture = async (e) => {
+    console.log('ok1');
+    e.preventDefault();
+    console.log('ok2');
+    const formData = new FormData();
+    console.log('ok3');
+    formData.append('image', e.target.files[0]);
+    console.log('ok4');
+    formData.append('id', loginStorage.id);
+    console.log(formData.get('id'));
+
+    dispatch(modifyProfilePicture(formData));
+    console.log('ok6');
+
+    setTimeout(function(){
+      dispatch(getProfile(id));
+  }, 100);
+  }
+
+
   return (
     <Box>
       <Box borderBottom="1px solid #ccc" padding="8px 20px">
@@ -46,7 +77,7 @@ export default function Profile() {
 
           {status === "success" && (
             <Grid item >
-              
+
               <Typography sx={{ fontSize: "12px", color: "#555" }}>
                 {profile.posts && profile.posts.length} posts
               </Typography>{" "}
@@ -75,15 +106,27 @@ export default function Profile() {
                 borderRadius: "50%",
               }}
             >
-              <img width="150px" src={profile.profileImageUrl} alt="profile" />
+              <Grid>
+
+                <IconButton onClick={onButtonClick}>
+                  <input type='file' id='file' name="image" ref={inputFile} style={{ display: 'none' }} accept="image/*"
+                    onChange={(e) => {
+                      handleProfilePicture(e);
+                    }} />
+                  <Avatar
+                    sx={{ width: 150, height: 150 }}
+                    src={profile.profileImageUrl} alt="profile" />
+                </IconButton>
+
+              </Grid>
             </Box>
           </Box>
           <Box textAlign="right" padding="10px 20px">
             <IconButton>
               <a href={"mailto:" + profile.email}><MailOutlineIcon /></a>
-              
+
             </IconButton>
-          
+
           </Box>
           <Box padding="10px 20px">
             <Typography variant="h6" sx={{ fontWeight: "500" }}>
@@ -124,7 +167,7 @@ export default function Profile() {
                 </Typography>
               </Box>
             </Box>
-           
+
           </Box>
           <Box borderBottom="1px solid #ccc">
             <Typography
