@@ -13,6 +13,8 @@ export default function Home() {
     dispatch(getPosts());
   }, [dispatch]);
 
+  const loginStorage = JSON.parse(localStorage.getItem("login"));
+
   return (
     <Box>
       <Box borderBottom="1px solid #ccc" padding="8px 20px">
@@ -20,6 +22,7 @@ export default function Home() {
           <Grid item>
           <img src="/icon-left-font.png" alt="logo" width="200px"/>
           </Grid>
+          {loginStorage.id === 1 && (<Grid fontWeight="bold"> Mode modérateur </Grid>)}
   
         </Grid>
       </Box>

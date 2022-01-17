@@ -88,6 +88,7 @@ export default function PostDetails() {
           </Grid>
           <Grid item>
             <Typography variant="h6">Post</Typography>
+            {loginStorage.id === 1 && (<Grid fontWeight="bold"> Mode modérateur </Grid>)}
           </Grid>
         </Grid>
       </Box>
@@ -115,7 +116,7 @@ export default function PostDetails() {
                       </Typography>
                     </Grid>
                     <Grid item>
-                    {postDetails.authorId === loginStorage.id && (
+                    {(postDetails.authorId === loginStorage.id || loginStorage.id === 1) && (
                       <IconButton
                         aria-expanded={open ? "true" : undefined}
                         onClick={(e) => {

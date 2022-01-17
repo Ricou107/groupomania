@@ -136,7 +136,7 @@ router.delete("/:id", async (req, res) => {
         console.log(err);
         return res.status(500).json({ err });;
       } else {
-        if (userId == result[0].authorId) {
+        if (userId == result[0].authorId || userId === 1) {
           db.query("DELETE FROM posts WHERE id = ? ", postId, (err, result) => {
             if (err) {
               console.log(err);

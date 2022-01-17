@@ -135,7 +135,7 @@ export default function Post({ post, profile }) {
                     )}
                   </Grid>
                   <Grid item>
-                    {post.author.id === id && (
+                    {(post.author.id === id || id === 1) && (
                       <IconButton
                         aria-expanded={open ? "true" : undefined}
                         onClick={(e) => {

@@ -26,6 +26,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const { profile, status } = useSelector((state) => state.auth);
   //const { id } = JSON.parse(localStorage.getItem("login"));
+  const loginStorage = JSON.parse(localStorage.getItem("login"));
 
   useEffect(() => {
     dispatch(getProfile(id));
@@ -44,13 +45,12 @@ export default function Profile() {
           </Grid>
 
           {status === "success" && (
-            <Grid item>
-              <Typography variant="h6">
-                {profile.userId && profile.userId && profile.userId.name}
-              </Typography>
+            <Grid item >
+              
               <Typography sx={{ fontSize: "12px", color: "#555" }}>
                 {profile.posts && profile.posts.length} posts
               </Typography>{" "}
+              {loginStorage.id === 1 && (<Grid fontWeight="bold"> Mode modérateur </Grid>)}
             </Grid>
           )}
         </Grid>
