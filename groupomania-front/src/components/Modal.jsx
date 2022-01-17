@@ -14,6 +14,7 @@ export default function Modal({
   handleSave,
   saveText,
   len,
+  leni,
 }) {
   const theme = useTheme();
   const handleClick = () => {
@@ -32,7 +33,7 @@ export default function Modal({
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         <Button
-          disabled={len === 0}
+          disabled={len === 0 && leni === 0}
           variant="contained"
           color="primary"
           size="small"

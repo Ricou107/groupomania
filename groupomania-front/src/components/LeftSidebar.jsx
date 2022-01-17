@@ -60,6 +60,7 @@ export default function LeftSidebar() {
     if (data) {
       dispatch(getPosts());
       setPostText("");
+      setPostImage("");
     }
   };
 
@@ -168,6 +169,7 @@ export default function LeftSidebar() {
         <Hidden lgDown>
           <Button
             onClick={handleModalOpen}
+            
             variant="contained"
             color="primary"
             fullWidth
@@ -236,6 +238,7 @@ export default function LeftSidebar() {
           handleClose={handleModalClose}
           saveText={"Post"}
           len={postText.length}
+          leni={postImage.length}
           handleSave={handleAddPost}
         >
           <Box>
@@ -265,6 +268,7 @@ export default function LeftSidebar() {
             title="Ajoutez une image !"
             onChange={(e) => setPostImage(e.target.files[0])}/>
             </Box>
+            {postImage !== '' ? <img src={URL.createObjectURL(postImage)} alt="uploadedPicture"/> : "" }
                 </Box>
               </Grid>
             </Grid>
