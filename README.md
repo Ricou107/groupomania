@@ -18,4 +18,7 @@ Type `npm install` to install node modules then type `npm start` to launch the b
 # Dotenv
 The dotenv files are provided. You may need to modify MySQL parameters (user and password).
 
+# Moderation
+By default, the first user to register (the one that will have the id #1 in the database) will be moderator and have rights to delete all posts from everyone.
+
 # Enjoy !
