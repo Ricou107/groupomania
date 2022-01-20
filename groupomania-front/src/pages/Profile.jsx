@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Grid,
   IconButton,
-  Link,
   Typography,
   useTheme,
   Button,
@@ -12,7 +11,6 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import Avatar from '@mui/material/Avatar';
 import Post from "../components/Post";
@@ -42,6 +40,13 @@ export default function Profile() {
     // `current` points to the mounted file input element
 
     inputFile.current.click()
+  }
+
+  const inputFile2 = useRef(null)
+  const onButtonClick2 = async () => {
+    // `current` points to the mounted file input element
+
+    inputFile2.current.click()
   }
 
   const handleProfilePicture = async (e) => {
@@ -98,10 +103,10 @@ export default function Profile() {
       {status === "success" && (
         <Box height="90vh" sx={{ overflowY: "scroll" }}>
           <Box position="relative">
-          <Button onClick={onButtonClick}
+          <Button onClick={onButtonClick2}
                   disabled={parseInt(loginStorage.id) !== parseInt(id)}
                 >
-                  <input type='file' id='file' name="image" ref={inputFile} style={{ display: 'none' }} accept="image/*"
+                  <input type='file' id='file' name="image" ref={inputFile2} style={{ display: 'none' }} accept="image/*"
                     onChange={(e) => {
                       handleBackgroundPicture(e);
                     }} />
