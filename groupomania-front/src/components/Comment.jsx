@@ -1,10 +1,42 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, IconButton, Menu,
+  MenuItem, } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { parseDate } from "../utils/parseDate";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { deleteComment } from "../api";
+import { useDispatch } from "react-redux";
+import { getComments } from "../redux/postSlice";
+
+
+
 
 
 export default function Comment({ comment }) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { id } = JSON.parse(localStorage.getItem("login"));
+  const dispatch = useDispatch();
+
+
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+
+  const handleDeletePost = async () => {
+    console.log('ok')
+    const response = await deleteComment({commentId : comment.commentId });
+    if (response) {dispatch(getComments(comment.postId));}
+
+  };
+
   return (
     <Box
       padding="1rem"
@@ -54,6 +86,37 @@ export default function Comment({ comment }) {
                     {comment.comment}
                   </Typography>
                 </Box>
+                <Grid item>
+                    {(comment.authorId === id || id === 1) && (
+                      <IconButton
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleClick(e);
+                        }}
+                      >
+                        <MoreHorizIcon />
+                      </IconButton>
+                    )}
+                    <Menu
+                      id="basic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "basic-button",
+                      }}
+                    >
+                      <MenuItem
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDeletePost();
+                        }}
+                      >
+                        Delete Comment
+                      </MenuItem>
+                    </Menu>
+                  </Grid>
               </Grid>
               {/*<Grid item>
                 <IconButton>

@@ -7,12 +7,12 @@ const router = express.Router();
 router.get("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId
-      db.query("SELECT *, comments.id as commentId FROM comments JOIN users ON (comments.authorId = users.id) JOIN profiles ON (comments.authorId = profiles.userId) WHERE comments.postId = ? ORDER BY commentCreatedAt DESC", postId, (err, result) => {
-    res.status(200).json({
-      message: "Comments fetched successfully.",
-      response : {comments : result}
-    });
-  })
+    db.query("SELECT *, comments.id as commentId FROM comments JOIN users ON (comments.authorId = users.id) JOIN profiles ON (comments.authorId = profiles.userId) WHERE comments.postId = ? ORDER BY commentCreatedAt DESC", postId, (err, result) => {
+      res.status(200).json({
+        message: "Comments fetched successfully.",
+        response: { comments: result }
+      });
+    })
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -39,22 +39,19 @@ router.post("/:postId", async (req, res) => {
   }
 });
 
-router.delete("/:postId/:commentId", async (req, res) => {
+router.delete("/:commentId", async (req, res) => {
+
+  const commentId = req.params.commentId;
   try {
-    const postId = req.params.postId;
-    const commentId = req.params.commentId;
-    const comment = await Comment.findOneAndDelete({ postId, _id: commentId });
-    if (!comment) {
-      return res.status(404).json({
-        message: "Comment does not exist.",
-      });
-    }
-    res.status(200).json({
-      message: "Comment deleted successfully.",
-      response: {
-        comment,
-      },
-    });
+    db.query("SELECT * FROM comments WHERE id = ?", commentId, (err, result) => {
+      if (result[0].authorId === req.user.id || req.user.id == 1) {
+        db.query("DELETE FROM comments WHERE id = ?", commentId, (err, result) => {
+          res.status(200).json({ message: "Le commentaire est supprimé." })
+        })
+      } else {
+        res.status(400).json({ message: "Vous n'avez pas les droits pour supprimer ce commentaire." })
+      }
+    })
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -62,6 +59,9 @@ router.delete("/:postId/:commentId", async (req, res) => {
       error: error.message,
     });
   }
+
+
+
 });
 
 module.exports = router;

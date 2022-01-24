@@ -77,7 +77,7 @@ export default function AddPost() {
               Post
             </Button>
           </Box>
-          {postImage !== '' ? <img src={URL.createObjectURL(postImage)} alt="uploadedPicture"/> : "" }
+          {postImage !== '' ? <img src={URL.createObjectURL(postImage)} alt="uploadedPicture" style={{maxWidth:"600px"}} /> : "" }
         </Grid>
       </Grid>
     </Box>

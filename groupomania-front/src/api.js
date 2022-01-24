@@ -41,7 +41,7 @@ export const deletePost = async (postData) => {
 
 export const deleteComment = async (postData) => {
   try {
-    const { data } = await axios.delete(`/api/comments/${postData.id}`);
+    const { data } = await axios.delete("/api/comments/" + postData.commentId, postData);
     return data;
   } catch (error) {
     alert("Something went wrong.");
